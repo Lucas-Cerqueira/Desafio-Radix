@@ -84,6 +84,7 @@ plot_temp(4,2)
 plt.savefig ('pictures/temp4xtemp2.svg')
 
 
+
 # Plot Temp3 x Temp1 for each class
 plot_temp (3,1)
 plt.savefig ('pictures/temp3xtemp1.svg')

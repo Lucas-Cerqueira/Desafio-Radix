@@ -16,7 +16,7 @@ import csv
 import keras
 
 from keras.layers import Input, Dense
-from keras.models import Model
+from keras.models import Model, load_model
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 from sklearn.cross_validation import train_test_split
@@ -27,7 +27,7 @@ from sklearn.externals import joblib
 
 num_classes = 2
 batch_size = 10
-epochs = 100
+epochs = 300
 
 csvfile = open('data/p1_data_train.csv', 'r')
 reader = csv.reader(csvfile, delimiter=',')
@@ -61,17 +61,39 @@ output = Dense (1, activation="sigmoid") (hidden)
 model = Model (inputs=inputs, outputs=output)
 
 # Compile the model using MSE as loss function and optimizer Adagrad
-model.compile(loss=keras.losses.mean_squared_error, optimizer=keras.optimizers.Adagrad(), metrics=['accuracy'])
+model.compile(loss=keras.losses.mean_squared_error, optimizer=keras.optimizers.SGD(lr=0.008, decay=1e-6), metrics=['accuracy'])
 
 
 # Configure callbacks to be used during the training
-earlyStop = EarlyStopping (monitor='val_acc', patience=25)
+earlyStop = EarlyStopping (monitor='val_loss', patience=10)
 checkpoint = ModelCheckpoint ('model.hdf5', monitor='val_acc', save_best_only=True)
 
 # Train the model and save the best using the "ModelCheckpoint" callback
-model.fit(input_train, target_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(input_test,target_test),
+history = model.fit(input_train, target_train, batch_size=batch_size, epochs=epochs, verbose=1, validation_data=(input_test,target_test),
 	                callbacks = [earlyStop, checkpoint])
 
 # Evaluate the model using test set
+model = load_model('model.hdf5')
 score = model.evaluate(input_test, target_test, verbose=0)
 print ("Accuracy on test set: "+ str(score[1]))
+
+
+fig, ax = plt.subplots(1,2)
+
+ax[0].plot (history.history['val_loss'], 'r', linewidth=2)
+ax[0].set_title ('MSE no conjunto de teste por época', fontsize='x-large', fontweight='bold')
+ax[0].set_xlabel('#Época', fontsize=14, fontweight = 'bold')
+ax[0].set_ylabel ('MSE', fontsize=14, fontweight = 'bold')
+
+ax[1].plot (history.history['val_acc'], 'r', linewidth=2)
+ax[1].set_title ('Acurácia no conjunto de teste por época', fontsize='x-large', fontweight='bold')
+ax[1].set_xlabel('#Época', fontsize=14, fontweight = 'bold')
+ax[1].set_ylabel ('Acurácia', fontsize=14, fontweight = 'bold')
+
+best_epoch = (np.argmax(history.history['val_acc']))
+
+ax[1].hold(True)
+ax[1].plot (best_epoch, history.history['val_acc'][best_epoch], 'o', color='black')
+ax[1].annotate('%.3f'%history.history['val_acc'][best_epoch], xy=(best_epoch, history.history['val_acc'][best_epoch]), xytext=(best_epoch, history.history['val_acc'][best_epoch]-0.015))
+#fig.savefig('pictures/loss_acc_epoch.svg', bbox_inches='tight')
+plt.show()
