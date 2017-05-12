@@ -26,7 +26,7 @@ def plot_temp(temp_y, temp_x, axis=None, show=False):
 	if (not axis):
 		plt.figure()
 		plt.plot (input_data[target_data == 0,temp_x-1], input_data[target_data == 0,temp_y-1], 'bo', label='Estado ótimo')
-		plt.plot (input_data[target_data == 1,temp_x-1], input_data[target_data == 1,temp_y-1], 'r', label='Estado regular')
+		plt.plot (input_data[target_data == 1,temp_x-1], input_data[target_data == 1,temp_y-1], 'r*', label='Estado regular')
 		plt.xlabel ('Temperatura '+str(temp_x)+' (°C)', fontsize=14)
 		plt.ylabel ('Temperatura '+str(temp_y)+' (°C)', fontsize=14)
 		plt.title ('Temp'+str(temp_y)+' x Temp'+str(temp_x)+' por classe', fontsize="x-large", fontweight='bold')
@@ -35,7 +35,7 @@ def plot_temp(temp_y, temp_x, axis=None, show=False):
 			plt.show()
 	else:
 		axis.plot (input_data[target_data == 0,temp_x-1], input_data[target_data == 0,temp_y-1], 'bo', label='Estado ótimo')
-		axis.plot (input_data[target_data == 1,temp_x-1], input_data[target_data == 1,temp_y-1], 'r', label='Estado regular')
+		axis.plot (input_data[target_data == 1,temp_x-1], input_data[target_data == 1,temp_y-1], 'r*', label='Estado regular')
 		axis.set_xlabel ('Temperatura '+str(temp_x)+' (°C)', fontsize=14)
 		axis.set_ylabel ('Temperatura '+str(temp_y)+' (°C)', fontsize=14)
 		axis.set_title ('Temp'+str(temp_y)+' x Temp'+str(temp_x)+' por classe', fontsize="x-large", fontweight='bold')
