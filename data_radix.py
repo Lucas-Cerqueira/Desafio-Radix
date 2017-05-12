@@ -76,18 +76,18 @@ for i in range(num_classes):
 
 axarr[1].set_xlabel('Temperatura (°C)', fontsize=14)
 fig.suptitle ('Histograma das temperaturas por estado no conjunto de treinamento', fontsize="x-large", fontweight='bold')
-plt.savefig ('pictures/histograma_por_estado.svg', bbox_inches='tight')
+plt.savefig ('pictures/histograma_por_estado.pdf', bbox_inches='tight')
 
 
 # Plot Temp4 x Temp2 for each class
 plot_temp(4,2)
-plt.savefig ('pictures/temp4xtemp2.svg')
+plt.savefig ('pictures/temp4xtemp2.pdf')
 
 
 
 # Plot Temp3 x Temp1 for each class
 plot_temp (3,1)
-plt.savefig ('pictures/temp3xtemp1.svg')
+plt.savefig ('pictures/temp3xtemp1.pdf')
 
 
 # Load model to plot confusion matrix if one has been trained
@@ -141,4 +141,4 @@ cnf_matrix[1,:] = cnf_matrix[1,:]*100./sum(target_data==1)
 # Plot non-normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=['Estado ótimo', 'Estado regular'])
-plt.savefig ('pictures/confusion_matrix.svg', bbox_inches='tight')
+plt.savefig ('pictures/confusion_matrix.pdf', bbox_inches='tight')
