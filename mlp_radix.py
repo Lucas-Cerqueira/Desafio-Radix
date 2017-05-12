@@ -26,7 +26,7 @@ from sklearn.externals import joblib
 
 
 num_classes = 2
-batch_size = 10
+batch_size = 50
 epochs = 300
 
 csvfile = open('data/p1_data_train.csv', 'r')
@@ -61,11 +61,11 @@ output = Dense (1, activation="sigmoid") (hidden)
 model = Model (inputs=inputs, outputs=output)
 
 # Compile the model using MSE as loss function and optimizer Adagrad
-model.compile(loss=keras.losses.mean_squared_error, optimizer=keras.optimizers.SGD(lr=0.008, decay=1e-6), metrics=['accuracy'])
+model.compile(loss=keras.losses.mean_squared_error, optimizer=keras.optimizers.SGD(lr=0.01, decay=1e-6), metrics=['accuracy'])
 
 
 # Configure callbacks to be used during the training
-earlyStop = EarlyStopping (monitor='val_loss', patience=10)
+earlyStop = EarlyStopping (monitor='val_acc', patience=50)
 checkpoint = ModelCheckpoint ('model.hdf5', monitor='val_acc', save_best_only=True)
 
 # Train the model and save the best using the "ModelCheckpoint" callback
